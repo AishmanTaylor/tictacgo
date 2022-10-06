@@ -32,13 +32,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool turn = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Center(child: GameScreen()),
+      body: Center(child: GameScreen(playersTurn: false)),
     );
   }
 }
