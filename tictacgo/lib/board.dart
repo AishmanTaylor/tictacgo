@@ -1,53 +1,64 @@
 import 'package:flutter/material.dart';
 
-enum States { X, O, neutral }
+enum States { X, O, neutral } // all possible states a square can have
+
+TextStyle style = const TextStyle(color: Colors.black, fontSize: 64);
+Text X = Text("X", style: style);
+Text O = Text("O", style: style);
+Text neutral = Text("", style: style);
+
+int nrows = 3; // number of rows in 3x3 2D array
+int ncols = 3; // number of columns in 3x3 2D array
+var boardStates = List.generate(
+    nrows,
+    (i) => List.generate(
+        ncols, (j) => States.neutral)); // 2D array of every square's state
 
 class GameScreen extends StatefulWidget {
-  GameScreen({super.key});
+  const GameScreen({super.key});
 
   @override
   State createState() => GameScreenState();
 }
 
 class GameScreenState extends State<GameScreen> {
-  States state = States.neutral;
+  bool hostsTurn = true;
+  bool firstTurn = true;
 
   void _changeTurn() {
+    firstTurn = false;
     setState(() {
-      if (state == States.neutral) {
-        state = States.X;
-      } else if (state == States.O) {
-        state = States.X;
-      } else {
-        state = States.O;
-      }
+      hostsTurn = !hostsTurn;
     });
   }
 
-  TextButton _setSquareText() {
-    if (state == States.neutral) {
-      return TextButton(
-          onPressed: _changeTurn,
-          child: TextButton(
-              onPressed: _changeTurn,
-              child: const Text("",
-                  style: TextStyle(fontSize: 64, color: Colors.black))));
-    } else if (state == States.X) {
-      return TextButton(
-          onPressed: _changeTurn,
-          child: const Text("X",
-              style: TextStyle(fontSize: 64, color: Colors.black)));
+  TextButton _handleState(int i, int j) {
+    if (firstTurn == true) {
+      return TextButton(onPressed: _changeTurn, child: neutral);
     } else {
-      return TextButton(
-          onPressed: _changeTurn,
-          child: const Text("O",
-              style: TextStyle(fontSize: 64, color: Colors.black)));
+      if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
+        setState(() {
+          boardStates[i][j] == States.X;
+        });
+        return TextButton(onPressed: _changeTurn, child: X);
+      } else if ((boardStates[i][j] == States.neutral) &&
+          (hostsTurn == false)) {
+        setState(() {
+          boardStates[i][j] == States.O;
+        });
+        return TextButton(onPressed: _changeTurn, child: O);
+      } else {
+        return TextButton(
+            onPressed: _changeTurn,
+            child: const Text("WRONG", style: TextStyle(fontSize: 64)));
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // just for displaying board
+    double topInset = 20.0; // inset for padding spacing only for the top
+    double leftInset = 28.0; // inset for padding spacing only for the left side
     return MaterialApp(
         home: Scaffold(
       body: Center(
@@ -60,19 +71,63 @@ class GameScreenState extends State<GameScreen> {
                 width: 350,
                 child: CustomPaint(
                   foregroundPainter: LinePainter(),
-                  // gotta figure this out
                   child: Column(children: [
                     Row(children: [
-                      SizedBox(
-                          height: 150,
-                          width: 150,
+                      Padding(
+                          padding:
+                              EdgeInsets.only(top: topInset, left: leftInset),
                           child: TextButton(
-                              onPressed: _changeTurn, child: _setSquareText())),
-                      SizedBox(
-                          height: 150,
+                              onPressed: _changeTurn,
+                              child: _handleState(0, 0))),
+                      Padding(
+                          padding:
+                              EdgeInsets.only(top: topInset, left: leftInset),
                           child: TextButton(
-                              onPressed: _changeTurn, child: _setSquareText()))
-                    ])
+                              onPressed: _changeTurn,
+                              child: _handleState(0, 1))),
+                      Padding(
+                          padding:
+                              EdgeInsets.only(top: topInset, left: leftInset),
+                          child: TextButton(
+                              onPressed: _changeTurn,
+                              child: _handleState(0, 2)))
+                    ]),
+                    Row(children: [
+                      Padding(
+                          padding: EdgeInsets.only(left: leftInset),
+                          child: TextButton(
+                              onPressed: _changeTurn,
+                              child: _handleState(1, 0))),
+                      Padding(
+                          padding: EdgeInsets.only(left: leftInset),
+                          child: TextButton(
+                              onPressed: _changeTurn,
+                              child: _handleState(1, 1))),
+                      Padding(
+                          padding: EdgeInsets.only(left: leftInset),
+                          child: TextButton(
+                              onPressed: _changeTurn,
+                              child: _handleState(1, 2)))
+                    ]),
+                    Row(
+                      children: [
+                        Padding(
+                            padding: EdgeInsets.only(left: leftInset),
+                            child: TextButton(
+                                onPressed: _changeTurn,
+                                child: _handleState(2, 0))),
+                        Padding(
+                            padding: EdgeInsets.only(left: leftInset),
+                            child: TextButton(
+                                onPressed: _changeTurn,
+                                child: _handleState(2, 1))),
+                        Padding(
+                            padding: EdgeInsets.only(left: leftInset),
+                            child: TextButton(
+                                onPressed: _changeTurn,
+                                child: _handleState(2, 2)))
+                      ],
+                    )
                   ]),
                 ))
           ],
