@@ -32,7 +32,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool turn = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum States { X, O, neutral }
+
 class GameScreen extends StatefulWidget {
   bool playersTurn = false;
 
@@ -10,17 +12,36 @@ class GameScreen extends StatefulWidget {
 }
 
 class GameScreenState extends State<GameScreen> {
-  bool playersTurn = false;
+  // bool hostsTurn = true;
 
-  Text X = const Text("X", style: TextStyle(fontSize: 64, color: Colors.black));
+  // States turn = States.neutral;
 
-  Text O = const Text("O", style: TextStyle(fontSize: 64, color: Colors.black));
+  // Text X = const Text("X", style: TextStyle(fontSize: 64, color: Colors.black));
 
-  void _changeTurn() {
-    setState(() {
-      playersTurn = !playersTurn;
-    });
-  }
+  // Text O = const Text("O", style: TextStyle(fontSize: 64, color: Colors.black));
+
+  // Text neutral = const Text("");
+
+  // void _changeTurn() {
+  //   setState(() {
+  //     if ((hostsTurn == true)) {
+  //       turn = States.X;
+  //     } else if (hostsTurn == false) {
+  //       turn = States.O;
+  //     }
+  //     hostsTurn = !hostsTurn;
+  //   });
+  // }
+
+  // TextButton _setSquareText() {
+  //   if (turn == States.O) {
+  //     return TextButton(onPressed: _changeTurn, child: O);
+  //   } else if (turn == States.X) {
+  //     return TextButton(onPressed: _changeTurn, child: X);
+  //   } else {
+  //     return TextButton(onPressed: _changeTurn, child: neutral);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +58,20 @@ class GameScreenState extends State<GameScreen> {
                 width: 350,
                 child: CustomPaint(
                   foregroundPainter: LinePainter(),
-                  child: Column(children: [
-                    Row(children: [
-                      Container(
-                          height: 150,
-                          width: 150,
-                          child: playersTurn == false
-                              ? TextButton(onPressed: _changeTurn, child: X)
-                              : TextButton(onPressed: _changeTurn, child: O))
-                    ])
-                  ]),
+                  // gotta figure this out
+                  // child: Column(children: [
+                  //   Row(children: [
+                  //     SizedBox(
+                  //         height: 150,
+                  //         width: 150,
+                  //         child: TextButton(
+                  //             onPressed: _changeTurn, child: _setSquareText())),
+                  //     SizedBox(
+                  //         height: 150,
+                  //         child: TextButton(
+                  //             onPressed: _changeTurn, child: _setSquareText()))
+                  //   ])
+                  // ]),
                 ))
           ],
         ),
