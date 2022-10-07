@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(child: GameScreen(playersTurn: false)),
+      body: Center(child: GameScreen()),
     );
   }
 }

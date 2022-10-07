@@ -3,45 +3,47 @@ import 'package:flutter/material.dart';
 enum States { X, O, neutral }
 
 class GameScreen extends StatefulWidget {
-  bool playersTurn = false;
-
-  GameScreen({super.key, required this.playersTurn});
+  GameScreen({super.key});
 
   @override
   State createState() => GameScreenState();
 }
 
 class GameScreenState extends State<GameScreen> {
-  // bool hostsTurn = true;
+  States state = States.neutral;
 
-  // States turn = States.neutral;
+  void _changeTurn() {
+    setState(() {
+      if (state == States.neutral) {
+        state = States.X;
+      } else if (state == States.O) {
+        state = States.X;
+      } else {
+        state = States.O;
+      }
+    });
+  }
 
-  // Text X = const Text("X", style: TextStyle(fontSize: 64, color: Colors.black));
-
-  // Text O = const Text("O", style: TextStyle(fontSize: 64, color: Colors.black));
-
-  // Text neutral = const Text("");
-
-  // void _changeTurn() {
-  //   setState(() {
-  //     if ((hostsTurn == true)) {
-  //       turn = States.X;
-  //     } else if (hostsTurn == false) {
-  //       turn = States.O;
-  //     }
-  //     hostsTurn = !hostsTurn;
-  //   });
-  // }
-
-  // TextButton _setSquareText() {
-  //   if (turn == States.O) {
-  //     return TextButton(onPressed: _changeTurn, child: O);
-  //   } else if (turn == States.X) {
-  //     return TextButton(onPressed: _changeTurn, child: X);
-  //   } else {
-  //     return TextButton(onPressed: _changeTurn, child: neutral);
-  //   }
-  // }
+  TextButton _setSquareText() {
+    if (state == States.neutral) {
+      return TextButton(
+          onPressed: _changeTurn,
+          child: TextButton(
+              onPressed: _changeTurn,
+              child: const Text("",
+                  style: TextStyle(fontSize: 64, color: Colors.black))));
+    } else if (state == States.X) {
+      return TextButton(
+          onPressed: _changeTurn,
+          child: const Text("X",
+              style: TextStyle(fontSize: 64, color: Colors.black)));
+    } else {
+      return TextButton(
+          onPressed: _changeTurn,
+          child: const Text("O",
+              style: TextStyle(fontSize: 64, color: Colors.black)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,19 +61,19 @@ class GameScreenState extends State<GameScreen> {
                 child: CustomPaint(
                   foregroundPainter: LinePainter(),
                   // gotta figure this out
-                  // child: Column(children: [
-                  //   Row(children: [
-                  //     SizedBox(
-                  //         height: 150,
-                  //         width: 150,
-                  //         child: TextButton(
-                  //             onPressed: _changeTurn, child: _setSquareText())),
-                  //     SizedBox(
-                  //         height: 150,
-                  //         child: TextButton(
-                  //             onPressed: _changeTurn, child: _setSquareText()))
-                  //   ])
-                  // ]),
+                  child: Column(children: [
+                    Row(children: [
+                      SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: TextButton(
+                              onPressed: _changeTurn, child: _setSquareText())),
+                      SizedBox(
+                          height: 150,
+                          child: TextButton(
+                              onPressed: _changeTurn, child: _setSquareText()))
+                    ])
+                  ]),
                 ))
           ],
         ),
