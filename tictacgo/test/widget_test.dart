@@ -13,7 +13,11 @@ import 'package:tictacgo/main.dart';
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+<<<<<<< refs/remotes/origin/networking
     await tester.pumpWidget(MyApp());
+=======
+    await tester.pumpWidget(homeScreen());
+>>>>>>> Connected home to game screen
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
