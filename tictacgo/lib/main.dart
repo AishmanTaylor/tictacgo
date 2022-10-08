@@ -7,7 +7,6 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:tictacgo/friends_data.dart';
 import 'package:tictacgo/text_widgets.dart';
-import 'package:tictacgo/drop_down.dart';
 
 import 'list_items.dart';
 
@@ -156,6 +155,20 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List<DropdownMenuItem<String>> get dropdownItems {
+    List<DropdownMenuItem<String>> menuItems = _friends.map((name) {
+      return DropdownMenuItem<String>(
+        child: Text(name),
+        value: _friends.ipAddr(name),
+      );
+    }).toList();
+    return menuItems;
+  }
+
+// https://blog.logrocket.com/creating-dropdown-list-flutter/
+  String? selectedValue = null;
+  final _dropdownFormKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,7 +183,43 @@ class _MyHomePageState extends State<MyHomePage> {
             preferredSize: Size.zero),
       ),
       body: Center(
-        child: DropdownItem(),
+        child: Form(
+            key: _dropdownFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      filled: true,
+                      fillColor: Colors.blueAccent,
+                    ),
+                    validator: (value) =>
+                        value == null ? "Select a friend to begin." : null,
+                    dropdownColor: Colors.blueAccent,
+                    value: selectedValue,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedValue = newValue!;
+                      });
+                    },
+                    items: dropdownItems),
+                ElevatedButton(
+                    onPressed: () {
+                      if (_dropdownFormKey.currentState!.validate()) {
+                        //valid flow
+                      }
+                    },
+                    child: Text("Start"))
+              ],
+            )),
         // ListView(
         //   padding: const EdgeInsets.symmetric(vertical: 8.0),
         //   children: _friends.map((name) {
