@@ -73,16 +73,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void _listenToSocket(Socket socket) {
     socket.listen((data) {
       setState(() {
-        // _handleIncomingMessage(socket.remoteAddress.address, data);
+        _handleIncomingMessage(socket.remoteAddress.address, data);
       });
     });
   }
 
-  // void _handleIncomingMessage(String ip, Uint8List incomingData) {
-  //   String received = String.fromCharCodes(incomingData);
-  //   print("Received '$received' from '$ip'");
-  //   _friends.receiveFrom(ip, received);
-  // }
+  void _handleIncomingMessage(String ip, Uint8List incomingData) {
+    String received = String.fromCharCodes(incomingData);
+    print("Received '$received' from '$ip'");
+    _friends.receiveFrom(ip, received);
+  }
 
   void addNew() {
     setState(() {

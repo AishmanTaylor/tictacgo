@@ -19,16 +19,16 @@ class Friends extends Iterable<String> {
 
   Friend? getFriend(String? name) => _names2Friends[name];
 
-  // void receiveFrom(String ip, String message) {
-  //   print("receiveFrom($ip, $message)");
-  //   if (!_ips2Friends.containsKey(ip)) {
-  //     String newFriend = "Friend${_ips2Friends.length}";
-  //     print("Adding new friend");
-  //     add(newFriend, ip);
-  //     print("added $newFriend!");
-  //   }
-  //   _ips2Friends[ip]!.receive(message);
-  // }
+  void receiveFrom(String ip, String message) {
+    print("receiveFrom($ip, $message)");
+    if (!_ips2Friends.containsKey(ip)) {
+      String newFriend = "Friend${_ips2Friends.length}";
+      print("Adding new friend");
+      add(newFriend, ip);
+      print("added $newFriend!");
+    }
+    _ips2Friends[ip]!.receive(message);
+  }
 
   @override
   Iterator<String> get iterator => _names2Friends.keys.iterator;
@@ -41,6 +41,27 @@ class Friend extends ChangeNotifier {
 
   Friend({required this.ipAddr, required this.name});
 
+  Future<void> send(String message) async {
+    Socket socket = await Socket.connect(ipAddr, ourPort);
+    socket.write(message);
+    socket.close();
+    await _add_message("Me", message);
+  }
+
+  Future<void> receive(String message) async {
+    return _add_message(name, message);
+  }
+
+  Future<void> _add_message(String name, String message) async {
+    await m.protect(() async {
+      _messages.add(Message(author: name, content: message));
+      notifyListeners();
+    });
+  }
+
+  String history() => _messages
+      .map((m) => m.transcript)
+      .fold("", (message, line) => message + '\n' + line);
 }
 
 class Message {
