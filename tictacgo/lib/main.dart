@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:tictacgo/friends_data.dart';
 import 'package:tictacgo/text_widgets.dart';
 
-import 'list_items.dart';
-
 void main() {
   runApp(MyApp());
 }
