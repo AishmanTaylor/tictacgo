@@ -4,6 +4,8 @@ import 'package:tictacgo/friends_data.dart';
 typedef FriendListChatCallback = Function(Friend item);
 typedef FriendListEditCallback = Function(Friend item);
 
+//List<DropdownMenuItem<String>> menuItems = [ DropdownMenuItem(child: Text("USA"), value: "USA"),];
+
 class FriendListItem extends StatelessWidget {
   FriendListItem({
     required this.friend,

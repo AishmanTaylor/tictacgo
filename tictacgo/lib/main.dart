@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Networking Demo'),
+      home: MyHomePage(title: 'TicTacGo'),
     );
   }
 }
@@ -189,21 +189,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            FloatingActionButton(
-              onPressed: () {
-                _displayTextInputDialog(context);
-              },
-              tooltip: 'Edit Friend',
-              child: const Icon(Icons.edit),
-            ),
+            // FloatingActionButton.extended(
+            //     onPressed: () {
+            //       _displayTextInputDialog(context);
+            //     },
+            //     tooltip: 'Edit Friend',
+            //     icon: const Icon(Icons.edit),
+            //     label: Text("Edit Friend")),
             Expanded(child: Container()),
-            FloatingActionButton(
-              onPressed: () {
-                _displayTextInputDialog(context);
-              },
-              tooltip: 'Add Friend',
-              child: const Icon(Icons.add),
-            ),
+            FloatingActionButton.extended(
+                onPressed: () {
+                  _displayTextInputDialog(context);
+                },
+                tooltip: 'Add Friend',
+                icon: const Icon(Icons.add),
+                label: Text("Add Friend")),
           ],
         ),
       ),
