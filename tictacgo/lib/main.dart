@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:tictacgo/friends_data.dart';
 import 'package:tictacgo/text_widgets.dart';
 
+import 'game.dart';
+
 void main() {
-  runApp(MyApp());
+  runApp(homeScreen());
 }
 
-class MyApp extends StatelessWidget {
+class homeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -214,7 +216,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                     onPressed: () {
                       if (_dropdownFormKey.currentState!.validate()) {
-                        //valid flow
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const gameScreen()),
+                        );
                       }
                     },
                     child: Text("Start"))
