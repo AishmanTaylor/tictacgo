@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 enum States { X, O, neutral } // all possible states a square can have
 
-TextStyle style = const TextStyle(color: Colors.black, fontSize: 64);
+TextStyle style = const TextStyle(color: Colors.black, fontSize: 75);
 Text X = Text("X", style: style);
 Text O = Text("O", style: style);
 Text neutral = Text("", style: style);
@@ -25,40 +25,47 @@ class GameScreenState extends State<GameScreen> {
   bool hostsTurn = true;
   bool firstTurn = true;
 
-  void _changeTurn() {
+  void _changeTurn(int i, int j) {
     firstTurn = false;
     setState(() {
+      if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
+        boardStates[i][j] == States.X;
+      } else if ((boardStates[i][j] == States.neutral) &&
+          (hostsTurn == false)) {
+        boardStates[i][j] == States.O;
+      } else {
+        boardStates[i][j] == States.X;
+      }
       hostsTurn = !hostsTurn;
     });
   }
 
-  TextButton _handleState(int i, int j) {
-    if (firstTurn == true) {
-      return TextButton(onPressed: _changeTurn, child: neutral);
+  void _calcState(int i, int j) {
+    if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
+      boardStates[i][j] == States.X;
+    } else if ((boardStates[i][j] == States.neutral) && (hostsTurn == false)) {
+      boardStates[i][j] == States.O;
     } else {
-      if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
-        setState(() {
-          boardStates[i][j] == States.X;
-        });
-        return TextButton(onPressed: _changeTurn, child: X);
-      } else if ((boardStates[i][j] == States.neutral) &&
-          (hostsTurn == false)) {
-        setState(() {
-          boardStates[i][j] == States.O;
-        });
-        return TextButton(onPressed: _changeTurn, child: O);
-      } else {
-        return TextButton(
-            onPressed: _changeTurn,
-            child: const Text("WRONG", style: TextStyle(fontSize: 64)));
-      }
+      boardStates[i][j] == States.X;
+    }
+  }
+
+  Text _displayState(int i, int j) {
+    if (boardStates[i][j] == States.X) {
+      return X;
+    } else if (boardStates[i][j] == States.O) {
+      return O;
+    } else {
+      return neutral;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     double topInset = 20.0; // inset for padding spacing only for the top
-    double leftInset = 28.0; // inset for padding spacing only for the left side
+    double leftInsetX = 40;
+    double leftInsetO =
+        37.3; // inset for padding spacing only for the left side
     return MaterialApp(
         home: Scaffold(
       body: Center(
@@ -74,58 +81,67 @@ class GameScreenState extends State<GameScreen> {
                   child: Column(children: [
                     Row(children: [
                       Padding(
-                          padding:
-                              EdgeInsets.only(top: topInset, left: leftInset),
+                          padding: EdgeInsets.only(
+                              top: topInset,
+                              left: hostsTurn ? leftInsetX : leftInsetO),
                           child: TextButton(
-                              onPressed: _changeTurn,
-                              child: _handleState(0, 0))),
+                              onPressed: () => _changeTurn(0, 0),
+                              child: _displayState(0, 0))),
                       Padding(
-                          padding:
-                              EdgeInsets.only(top: topInset, left: leftInset),
+                          padding: EdgeInsets.only(
+                              top: topInset,
+                              left: hostsTurn ? leftInsetX : leftInsetO),
                           child: TextButton(
-                              onPressed: _changeTurn,
-                              child: _handleState(0, 1))),
+                              onPressed: () => _changeTurn(0, 1),
+                              child: _displayState(0, 1))),
                       Padding(
-                          padding:
-                              EdgeInsets.only(top: topInset, left: leftInset),
+                          padding: EdgeInsets.only(
+                              top: topInset,
+                              left: hostsTurn ? leftInsetX : leftInsetO),
                           child: TextButton(
-                              onPressed: _changeTurn,
-                              child: _handleState(0, 2)))
+                              onPressed: () => _changeTurn(0, 2),
+                              child: _displayState(0, 2)))
                     ]),
                     Row(children: [
                       Padding(
-                          padding: EdgeInsets.only(left: leftInset),
+                          padding: EdgeInsets.only(
+                              left: hostsTurn ? leftInsetX : leftInsetO),
                           child: TextButton(
-                              onPressed: _changeTurn,
-                              child: _handleState(1, 0))),
+                              onPressed: () => _changeTurn(1, 0),
+                              child: _displayState(1, 0))),
                       Padding(
-                          padding: EdgeInsets.only(left: leftInset),
+                          padding: EdgeInsets.only(
+                              left: hostsTurn ? leftInsetX : leftInsetO),
                           child: TextButton(
-                              onPressed: _changeTurn,
-                              child: _handleState(1, 1))),
+                              onPressed: () => _changeTurn(1, 1),
+                              child: _displayState(1, 1))),
                       Padding(
-                          padding: EdgeInsets.only(left: leftInset),
+                          padding: EdgeInsets.only(
+                              left: hostsTurn ? leftInsetX : leftInsetO),
                           child: TextButton(
-                              onPressed: _changeTurn,
-                              child: _handleState(1, 2)))
+                              onPressed: () => _changeTurn(1, 2),
+                              child: _displayState(1, 2)))
                     ]),
                     Row(
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(left: leftInset),
+                            padding: EdgeInsets.only(
+                                left: hostsTurn ? leftInsetX : leftInsetO),
                             child: TextButton(
-                                onPressed: _changeTurn,
-                                child: _handleState(2, 0))),
+                                onPressed: () => _changeTurn(2, 0),
+                                child: _displayState(2, 0))),
                         Padding(
-                            padding: EdgeInsets.only(left: leftInset),
+                            padding: EdgeInsets.only(
+                                left: hostsTurn ? leftInsetX : leftInsetO),
                             child: TextButton(
-                                onPressed: _changeTurn,
-                                child: _handleState(2, 1))),
+                                onPressed: () => _changeTurn(2, 1),
+                                child: _displayState(2, 1))),
                         Padding(
-                            padding: EdgeInsets.only(left: leftInset),
+                            padding: EdgeInsets.only(
+                                left: hostsTurn ? leftInsetX : leftInsetO),
                             child: TextButton(
-                                onPressed: _changeTurn,
-                                child: _handleState(2, 2)))
+                                onPressed: () => _changeTurn(2, 2),
+                                child: _displayState(2, 2)))
                       ],
                     )
                   ]),
