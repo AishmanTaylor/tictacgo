@@ -7,6 +7,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:tictacgo/friends_data.dart';
 import 'package:tictacgo/text_widgets.dart';
+import 'package:tictacgo/drop_down.dart';
 
 import 'list_items.dart';
 
@@ -169,23 +170,42 @@ class _MyHomePageState extends State<MyHomePage> {
             preferredSize: Size.zero),
       ),
       body: Center(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          children: _friends.map((name) {
-            return FriendListItem(
-              friend: _friends.getFriend(name)!,
-              // onListTapped: _handleChat,
-              onListEdited: _handleEditFriend,
-            );
-          }).toList(),
-        ),
+        child: DropdownItem(),
+        // ListView(
+        //   padding: const EdgeInsets.symmetric(vertical: 8.0),
+        //   children: _friends.map((name) {
+        //     return FriendListItem(
+        //       friend: _friends.getFriend(name)!,
+        //       // onListTapped: _handleChat,
+        //       onListEdited: _handleEditFriend,
+        //     );
+        //   }).toList(),
+        // ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _displayTextInputDialog(context);
-        },
-        tooltip: 'Add Friend',
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(
+          left: 30,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                _displayTextInputDialog(context);
+              },
+              tooltip: 'Edit Friend',
+              child: const Icon(Icons.edit),
+            ),
+            Expanded(child: Container()),
+            FloatingActionButton(
+              onPressed: () {
+                _displayTextInputDialog(context);
+              },
+              tooltip: 'Add Friend',
+              child: const Icon(Icons.add),
+            ),
+          ],
+        ),
       ),
     );
   }
