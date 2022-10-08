@@ -158,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = _friends.map((name) {
       return DropdownMenuItem<String>(
-        child: Text(name),
+        child: Text(name + " ip:" + _friends.ipAddr(name)!),
         value: _friends.ipAddr(name),
       );
     }).toList();
@@ -186,8 +186,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Form(
             key: _dropdownFormKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Padding(padding: EdgeInsets.only(bottom: 20)),
                 DropdownButtonFormField(
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -211,6 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                     items: dropdownItems),
+                Padding(padding: EdgeInsets.only(top: 50)),
                 ElevatedButton(
                     onPressed: () {
                       if (_dropdownFormKey.currentState!.validate()) {
@@ -220,16 +222,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text("Start"))
               ],
             )),
-        // ListView(
-        //   padding: const EdgeInsets.symmetric(vertical: 8.0),
-        //   children: _friends.map((name) {
-        //     return FriendListItem(
-        //       friend: _friends.getFriend(name)!,
-        //       // onListTapped: _handleChat,
-        //       onListEdited: _handleEditFriend,
-        //     );
-        //   }).toList(),
-        // ),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(
