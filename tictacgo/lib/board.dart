@@ -28,25 +28,24 @@ class GameScreenState extends State<GameScreen> {
   void _changeTurn(int i, int j) {
     firstTurn = false;
     setState(() {
-      if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
-        boardStates[i][j] == States.X;
-      } else if ((boardStates[i][j] == States.neutral) &&
-          (hostsTurn == false)) {
-        boardStates[i][j] == States.O;
-      } else {
-        boardStates[i][j] == States.X;
-      }
+      _calcState(i, j);
       hostsTurn = !hostsTurn;
     });
   }
 
   void _calcState(int i, int j) {
     if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
-      boardStates[i][j] == States.X;
+      setState(() {
+        boardStates[i][j] == States.X;
+      });
     } else if ((boardStates[i][j] == States.neutral) && (hostsTurn == false)) {
-      boardStates[i][j] == States.O;
+      setState(() {
+        boardStates[i][j] == States.O;
+      });
     } else {
-      boardStates[i][j] == States.X;
+      setState(() {
+        boardStates[i][j] == States.neutral;
+      });
     }
   }
 
