@@ -31,6 +31,7 @@ class GameScreenState extends State<GameScreen> {
   int turnCounter = 0;
 
   void _updateTurnText() {
+    // handles whose turn it is and if player has won or lost
     if (_checkWon(States.X) || _checkWon(States.O)) {
       setState(() {
         gameWon = true;
@@ -64,6 +65,7 @@ class GameScreenState extends State<GameScreen> {
   }
 
   void _processTurn(int i, int j) {
+    // handles how turns are dealt with
     setState(() {
       _calcState(i, j);
       _updateTurnText();
@@ -154,8 +156,6 @@ class GameScreenState extends State<GameScreen> {
   }
 
   Text _displayState(int i, int j) {
-    // if gameWon == false, do if elif tree below but with inactiveX/O/Neutral
-
     if (boardStates[i][j] == States.X) {
       return activeX;
     } else if (boardStates[i][j] == States.O) {
@@ -186,19 +186,23 @@ class GameScreenState extends State<GameScreen> {
                 height: 350,
                 width: 350,
                 child: CustomPaint(
-                  foregroundPainter: LinePainter(),
+                  foregroundPainter:
+                      LinePainter(), // displays tic-tac-toe board
                   child: Column(children: [
+                    // all the buttons and whatnot
                     Row(children: [
                       Padding(
                           padding:
                               EdgeInsets.only(top: topInset, left: leftInset),
                           child: TextButton(
+                              key: const Key("0, 0"),
                               onPressed: () => _processTurn(0, 0),
                               child: _displayState(0, 0))),
                       Padding(
                           padding:
                               EdgeInsets.only(top: topInset, left: leftInset),
                           child: TextButton(
+                              key: const Key("0, 1"),
                               onPressed: () => _processTurn(0, 1),
                               child: _displayState(0, 1))),
                       Padding(
@@ -254,6 +258,7 @@ class GameScreenState extends State<GameScreen> {
 }
 
 class LinePainter extends CustomPainter {
+  // creates the tic-tac-toe board
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..strokeWidth = 4; // sets width of lines

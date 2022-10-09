@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:tictacgo/board.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const MyGame());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyGame extends StatelessWidget {
+  const MyGame({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
