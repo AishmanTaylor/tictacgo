@@ -131,6 +131,28 @@ class GameScreenState extends State<GameScreen> {
     return false;
   }
 
+  ElevatedButton _displayPlayAgainButton() {
+    if (gameWon == false) {
+      return const ElevatedButton(onPressed: null, child: Text("Play Again?"));
+    } else {
+      return ElevatedButton(
+          onPressed: _playAgainButton, child: const Text("Play Again?"));
+    }
+  }
+
+  void _playAgainButton() {
+    for (int i = 0; i < boardStates.length; i++) {
+      for (int j = 0; j < boardStates.length; j++) {
+        setState(() {
+          boardStates[i][j] = States.neutral;
+          gameWon = false;
+          hostsTurn = true;
+          turnCounter = 0;
+        });
+      }
+    }
+  }
+
   Text _displayState(int i, int j) {
     // if gameWon == false, do if elif tree below but with inactiveX/O/Neutral
 
@@ -156,6 +178,9 @@ class GameScreenState extends State<GameScreen> {
           children: <Widget>[
             Padding(
                 padding: const EdgeInsets.only(bottom: 30), child: turnText),
+            Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: _displayPlayAgainButton()),
             Container(
                 color: Colors.white,
                 height: 350,
