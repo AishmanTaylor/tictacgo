@@ -13,26 +13,9 @@ import 'package:tictacgo/game.dart';
 import 'package:tictacgo/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
-
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
-
   testWidgets("All variables are set to their correct default values",
       (WidgetTester tester) async {
-    // Build the app
+    // Builds the app.
     await tester.pumpWidget(const MyGame());
 
     // Because the host goes first, the text should say "It's your turn!"
@@ -48,7 +31,7 @@ void main() {
 
   testWidgets("X's and O's show up correctly.", (WidgetTester tester) async {
     (WidgetTester tester) async {
-      // Build the app
+      // Builds the app.
       await tester.pumpWidget(const MyGame());
 
       // Tap a button and trigger a frame.
@@ -65,5 +48,67 @@ void main() {
       // Expect to find an "O" after previously tapping a button.
       expect(find.text("O"), findsOneWidget);
     };
+  });
+
+  testWidgets("turnText switches appropriately.", (WidgetTester tester) async {
+    // Builds the app.
+    await tester.pumpWidget(const MyGame());
+
+    // Ensures that once the game has started, text is displayed that shows it is your turn.
+    expect(find.byKey(const Key("Your Turn Text")), findsOneWidget);
+
+    // Taps a button and trigger a frame.
+    await tester.tap(find.byKey(const Key("0, 0")));
+    await tester.pump();
+
+    // Now that the host has made a move, text should display that it is the opponent's turn.
+    expect(find.byKey(const Key("Opponent Turn Text")), findsOneWidget);
+  });
+
+  testWidgets("The game can be won and the Play Again Button is functional",
+      (WidgetTester tester) async {
+    // Builds the app.
+    await tester.pumpWidget(const MyGame());
+
+    // Creates gameScreenState to ensure Play Again Button sets all spaces to Neutral.
+    GameScreenState gameScreenState = GameScreenState();
+
+    // When the game has not been finished, the Play Again Button should not be able to be pressed.
+    expect(find.byKey(const Key("Inactive Play Again Button")), findsOneWidget);
+
+    // Puts an "X" at the 0, 0 space and triggers a frame.
+    await tester.tap(find.byKey(const Key("0, 0")));
+    await tester.pump();
+
+    // Sets the hostsTurn back to true.
+    await tester.tap(find.byKey(const Key("0, 0")));
+    await tester.pump();
+
+    // Puts an "X" at the 0, 1 space and triggers a frame.
+    await tester.tap(find.byKey(const Key("1, 0")));
+    await tester.pump();
+
+    // Sets hostsTurn back to true.
+    await tester.tap(find.byKey(const Key("1, 0")));
+    await tester.pump();
+
+    // Puts an "X" at the 0, 2 space and triggers a frame.
+    await tester.tap(find.byKey(const Key("2, 0")));
+    await tester.pump();
+
+    // Now that the game has been won by the host, turnText should say "You won!"
+    expect(find.byKey(const Key("You Won Turn Text")), findsOneWidget);
+
+    // Now that the game has been finished, the Play Again Button should be active.
+    expect(find.byKey(const Key("Active Play Again Button")), findsOneWidget);
+
+    // Taps the Play Again Button and resets the board to all Neutral spaces.
+    await tester.tap(find.byKey(const Key("Active Play Again Button")));
+    await tester.pumpAndSettle();
+
+    // Ensures that the game's board has been reset and that the Play Again
+    // Button is once again Inactive.
+    expect(gameScreenState.boardStates[0][0], States.neutral);
+    expect(find.byKey(const Key("Inactive Play Again Button")), findsOneWidget);
   });
 }

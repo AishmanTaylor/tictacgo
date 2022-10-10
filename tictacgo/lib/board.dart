@@ -9,15 +9,6 @@ Text activeO = Text("O", style: style);
 Text activeNeutral = Text("", style: style);
 Text turnText = Text("", style: turnTextStyle);
 
-int nrows = 3; // number of rows in 3x3 2D array
-int ncols = 3; // number of columns in 3x3 2D array
-var boardStates = List.generate(
-    nrows,
-    (i) => List.generate(
-        ncols,
-        (j) => States
-            .neutral)); // 2D array of every square's state; all begin neutral
-
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
@@ -29,6 +20,12 @@ class GameScreenState extends State<GameScreen> {
   bool hostsTurn = true;
   bool gameWon = false;
   int turnCounter = 0;
+  var boardStates = List.generate(
+      3,
+      (i) => List.generate(
+          3,
+          (j) => States
+              .neutral)); // 2D array of every square's state; all begin neutral
 
   void _updateTurnText() {
     // handles whose turn it is and if player has won or lost
@@ -40,24 +37,29 @@ class GameScreenState extends State<GameScreen> {
     if (!gameWon) {
       if (hostsTurn) {
         setState(() {
-          turnText = Text("It's your turn!", style: turnTextStyle);
+          turnText = Text("It's your turn!",
+              style: turnTextStyle, key: const Key("Your Turn Text"));
         });
       } else {
         setState(() {
-          turnText = Text("It's your opponent's turn!", style: turnTextStyle);
+          turnText = Text("It's your opponent's turn!",
+              style: turnTextStyle, key: const Key("Opponent Turn Text"));
         });
       }
     } else {
       if (turnCounter >= 9) {
-        turnText = Text("It's a tie!", style: turnTextStyle);
+        turnText = Text("It's a tie!",
+            style: turnTextStyle, key: const Key("Tie Turn Text"));
       } else {
         if (hostsTurn) {
           setState(() {
-            turnText = Text("You lost!", style: turnTextStyle);
+            turnText = Text("You lost!",
+                style: turnTextStyle, key: const Key("You Lost Turn Text"));
           });
         } else {
           setState(() {
-            turnText = Text("You won!", style: turnTextStyle);
+            turnText = Text("You won!",
+                style: turnTextStyle, key: const Key("You Won Turn Text"));
           });
         }
       }
@@ -135,10 +137,15 @@ class GameScreenState extends State<GameScreen> {
 
   ElevatedButton _displayPlayAgainButton() {
     if (gameWon == false) {
-      return const ElevatedButton(onPressed: null, child: Text("Play Again?"));
+      return const ElevatedButton(
+          onPressed: null,
+          key: Key("Inactive Play Again Button"),
+          child: Text("Play Again?"));
     } else {
       return ElevatedButton(
-          onPressed: _playAgainButton, child: const Text("Play Again?"));
+          onPressed: _playAgainButton,
+          key: const Key("Active Play Again Button"),
+          child: const Text("Play Again?"));
     }
   }
 
@@ -177,7 +184,8 @@ class GameScreenState extends State<GameScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-                padding: const EdgeInsets.only(bottom: 30), child: turnText),
+                padding: const EdgeInsets.only(bottom: 30),
+                child: turnText), // turnText
             Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: _displayPlayAgainButton()),
@@ -186,70 +194,78 @@ class GameScreenState extends State<GameScreen> {
                 height: 350,
                 width: 350,
                 child: CustomPaint(
-                  foregroundPainter:
-                      LinePainter(), // displays tic-tac-toe board
-                  child: Column(children: [
-                    // all the buttons and whatnot
-                    Row(children: [
-                      Padding(
-                          padding:
-                              EdgeInsets.only(top: topInset, left: leftInset),
-                          child: TextButton(
-                              key: const Key("0, 0"),
-                              onPressed: () => _processTurn(0, 0),
-                              child: _displayState(0, 0))),
-                      Padding(
-                          padding:
-                              EdgeInsets.only(top: topInset, left: leftInset),
-                          child: TextButton(
-                              key: const Key("0, 1"),
-                              onPressed: () => _processTurn(0, 1),
-                              child: _displayState(0, 1))),
-                      Padding(
-                          padding:
-                              EdgeInsets.only(top: topInset, left: leftInset),
-                          child: TextButton(
-                              onPressed: () => _processTurn(0, 2),
-                              child: _displayState(0, 2)))
-                    ]),
-                    Row(children: [
-                      Padding(
-                          padding: EdgeInsets.only(left: leftInset),
-                          child: TextButton(
-                              onPressed: () => _processTurn(1, 0),
-                              child: _displayState(1, 0))),
-                      Padding(
-                          padding: EdgeInsets.only(left: leftInset),
-                          child: TextButton(
-                              onPressed: () => _processTurn(1, 1),
-                              child: _displayState(1, 1))),
-                      Padding(
-                          padding: EdgeInsets.only(left: leftInset),
-                          child: TextButton(
-                              onPressed: () => _processTurn(1, 2),
-                              child: _displayState(1, 2)))
-                    ]),
-                    Row(
+                    foregroundPainter:
+                        LinePainter(), // displays tic-tac-toe board
+                    child: Column(
                       children: [
-                        Padding(
-                            padding: EdgeInsets.only(left: leftInset),
-                            child: TextButton(
-                                onPressed: () => _processTurn(2, 0),
-                                child: _displayState(2, 0))),
-                        Padding(
-                            padding: EdgeInsets.only(left: leftInset),
-                            child: TextButton(
-                                onPressed: () => _processTurn(2, 1),
-                                child: _displayState(2, 1))),
-                        Padding(
-                            padding: EdgeInsets.only(left: leftInset),
-                            child: TextButton(
-                                onPressed: () => _processTurn(2, 2),
-                                child: _displayState(2, 2)))
+                        // all the buttons and whatnot
+                        Row(children: [
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: topInset, left: leftInset),
+                              child: TextButton(
+                                  key: const Key("0, 0"),
+                                  onPressed: () => _processTurn(0, 0),
+                                  child: _displayState(0, 0))),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: topInset, left: leftInset),
+                              child: TextButton(
+                                  key: const Key("0, 1"),
+                                  onPressed: () => _processTurn(0, 1),
+                                  child: _displayState(0, 1))),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: topInset, left: leftInset),
+                              child: TextButton(
+                                  key: const Key("0, 2"),
+                                  onPressed: () => _processTurn(0, 2),
+                                  child: _displayState(0, 2)))
+                        ]),
+                        Row(children: [
+                          Padding(
+                              padding: EdgeInsets.only(left: leftInset),
+                              child: TextButton(
+                                  key: const Key("1, 0"),
+                                  onPressed: () => _processTurn(1, 0),
+                                  child: _displayState(1, 0))),
+                          Padding(
+                              padding: EdgeInsets.only(left: leftInset),
+                              child: TextButton(
+                                  key: const Key("1, 1"),
+                                  onPressed: () => _processTurn(1, 1),
+                                  child: _displayState(1, 1))),
+                          Padding(
+                              padding: EdgeInsets.only(left: leftInset),
+                              child: TextButton(
+                                  key: const Key("1, 2"),
+                                  onPressed: () => _processTurn(1, 2),
+                                  child: _displayState(1, 2)))
+                        ]),
+                        Row(
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(left: leftInset),
+                                child: TextButton(
+                                    key: const Key("2, 0"),
+                                    onPressed: () => _processTurn(2, 0),
+                                    child: _displayState(2, 0))),
+                            Padding(
+                                padding: EdgeInsets.only(left: leftInset),
+                                child: TextButton(
+                                    key: const Key("2, 1"),
+                                    onPressed: () => _processTurn(2, 1),
+                                    child: _displayState(2, 1))),
+                            Padding(
+                                padding: EdgeInsets.only(left: leftInset),
+                                child: TextButton(
+                                    key: const Key("2, 2"),
+                                    onPressed: () => _processTurn(2, 2),
+                                    child: _displayState(2, 2)))
+                          ],
+                        )
                       ],
-                    )
-                  ]),
-                ))
+                    )))
           ],
         ),
       ),
