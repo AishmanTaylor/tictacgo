@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'friends_data.dart';
+
 enum States { X, O, neutral } // all possible states a square can have
 
 TextStyle style = const TextStyle(color: Colors.black, fontSize: 75);
@@ -14,7 +16,9 @@ var boardStates =
     List.generate(3, (i) => List.generate(3, (j) => States.neutral));
 
 class GameScreen extends StatefulWidget {
-  const GameScreen({super.key});
+  const GameScreen({super.key, this.friend});
+
+  final Friend? friend;
 
   @override
   State createState() => GameScreenState();
@@ -58,6 +62,14 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  Future<void> send(List<List<States>> msg) async {
+    await widget.friend!.send(msg).catchError((e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Error: $e"),
+      ));
+    });
+  }
+
   void _processTurn(int i, int j) {
     setState(() {
       _calcState(i, j);
@@ -71,10 +83,12 @@ class GameScreenState extends State<GameScreen> {
     if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
       setState(() {
         boardStates[i][j] = States.X;
+        send(boardStates);
       });
     } else if ((boardStates[i][j] == States.neutral) && (hostsTurn == false)) {
       setState(() {
         boardStates[i][j] = States.O;
+        send(boardStates);
       });
     }
   }
@@ -241,9 +255,6 @@ class GameScreenState extends State<GameScreen> {
                     )
                   ]),
                 )),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: _displayConfirmPlayButton()),
           ],
         ),
       ),
