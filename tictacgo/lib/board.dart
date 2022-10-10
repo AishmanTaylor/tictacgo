@@ -24,11 +24,13 @@ class GameScreen extends StatefulWidget {
   State createState() => GameScreenState();
 }
 
+//Creates object for the Game Screen
 class GameScreenState extends State<GameScreen> {
   bool hostsTurn = true;
   bool gameWon = false;
   int turnCounter = 0;
 
+  //Handling for if it is your turn or not
   void _updateTurnText() {
     if (_checkWon(States.X) || _checkWon(States.O)) {
       setState(() {
@@ -62,6 +64,7 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  //Handling for sending DONT TOUCH THIS UNDER ANY CIRCUMSTANCE
   Future<void> send(List<List<States>> msg) async {
     await widget.friend!.send(msg).catchError((e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -70,6 +73,7 @@ class GameScreenState extends State<GameScreen> {
     });
   }
 
+  //Handling for turns
   void _processTurn(int i, int j) {
     setState(() {
       _calcState(i, j);
@@ -79,6 +83,7 @@ class GameScreenState extends State<GameScreen> {
     });
   }
 
+  //Changes the enum of the cell on the board to X or O
   void _calcState(int i, int j) {
     if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
       setState(() {
@@ -93,6 +98,7 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  //Handling to check if there has been three in a row
   bool _checkWon(States goalState) {
     if (boardStates[0][0] == goalState &&
         boardStates[0][1] == goalState &&
@@ -140,6 +146,7 @@ class GameScreenState extends State<GameScreen> {
     return false;
   }
 
+  //Creates play again button
   ElevatedButton _displayPlayAgainButton() {
     if (gameWon == false) {
       return const ElevatedButton(onPressed: null, child: Text("Play Again?"));
@@ -149,6 +156,7 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  //Functionality for play again button
   void _playAgainButton() {
     for (int i = 0; i < boardStates.length; i++) {
       for (int j = 0; j < boardStates.length; j++) {
@@ -162,9 +170,8 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  //Handling to actually determine if the button should be an X or an O or neutral
   Text _displayState(int i, int j) {
-    // if gameWon == false, do if elif tree below but with inactiveX/O/Neutral
-
     if (boardStates[i][j] == States.X) {
       return activeX;
     } else if (boardStates[i][j] == States.O) {
@@ -174,6 +181,7 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  //Builds out the app screen we love GUI :)
   @override
   Widget build(BuildContext context) {
     _updateTurnText();
@@ -262,6 +270,7 @@ class GameScreenState extends State<GameScreen> {
   }
 }
 
+//Generates the 3x3 grid or # for a visual
 class LinePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
