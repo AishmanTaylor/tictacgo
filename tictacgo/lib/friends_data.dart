@@ -58,10 +58,6 @@ class Friend extends ChangeNotifier {
       notifyListeners();
     });
   }
-
-  String history() => _messages
-      .map((m) => m.transcript)
-      .fold("", (message, line) => message + '\n' + line);
 }
 
 class Message {
