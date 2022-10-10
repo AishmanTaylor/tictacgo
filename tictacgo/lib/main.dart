@@ -11,10 +11,12 @@ import 'package:tictacgo/text_widgets.dart';
 import 'board.dart';
 
 void main() {
-  runApp(homeScreen());
+  runApp(const homeScreen());
 }
 
 class homeScreen extends StatelessWidget {
+  const homeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,13 +25,13 @@ class homeScreen extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'TicTacGo'),
+      home: const MyHomePage(title: 'TicTacGo'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -40,9 +42,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? _ipaddress = "Loading...";
   late Friends _friends;
-  late List<DropdownMenuItem<String>> _friendList;
   late TextEditingController _nameController, _ipController;
 
+  @override
   void initState() {
     super.initState();
     _friends = Friends();
@@ -56,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Thank you https://stackoverflow.com/questions/52411168/how-to-get-device-ip-in-dart-flutter
     String? ip = await NetworkInfo().getWifiIP();
     setState(() {
-      _ipaddress = "My IP: " + ip!;
+      _ipaddress = "My IP: ${ip!}";
     });
   }
 
@@ -149,24 +151,18 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
-  void _handleEditFriend(Friend friend) {
-    setState(() {
-      print("Edit");
-    });
-  }
-
   List<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = _friends.map((name) {
       return DropdownMenuItem<String>(
-        child: Text(name + " ip:" + _friends.ipAddr(name)!),
         value: _friends.ipAddr(name),
+        child: Text("$name ip:${_friends.ipAddr(name)!}"),
       );
     }).toList();
     return menuItems;
   }
 
 // https://blog.logrocket.com/creating-dropdown-list-flutter/
-  String? selectedValue = null;
+  String? selectedValue;
   final _dropdownFormKey = GlobalKey<FormState>();
 
   @override
@@ -176,11 +172,11 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         // https://stackoverflow.com/questions/53880293/flutter-how-to-get-subtext-aligned-under-title-in-appbar
         bottom: PreferredSize(
+            preferredSize: Size.zero,
             child: Text(
               _ipaddress!,
               textAlign: TextAlign.center,
-            ),
-            preferredSize: Size.zero),
+            )),
       ),
       body: Center(
         child: Form(
@@ -188,15 +184,17 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Padding(padding: EdgeInsets.only(bottom: 20)),
+                const Padding(padding: EdgeInsets.only(bottom: 20)),
                 DropdownButtonFormField(
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                        borderSide:
+                            const BorderSide(color: Colors.blue, width: 2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 2),
+                        borderSide:
+                            const BorderSide(color: Colors.blue, width: 2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       filled: true,
@@ -212,7 +210,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
                     },
                     items: dropdownItems),
-                Padding(padding: EdgeInsets.only(top: 50)),
+                const Padding(padding: EdgeInsets.only(top: 50)),
                 ElevatedButton(
                     onPressed: () {
                       if (_dropdownFormKey.currentState!.validate()) {
@@ -223,12 +221,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         );
                       }
                     },
-                    child: Text("Start"))
+                    child: const Text("Start"))
               ],
             )),
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 30,
         ),
         child: Row(
@@ -248,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 tooltip: 'Add Friend',
                 icon: const Icon(Icons.add),
-                label: Text("Add Friend")),
+                label: const Text("Add Friend")),
           ],
         ),
       ),

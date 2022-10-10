@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'friends_data.dart';
 
 enum States { X, O, neutral } // all possible states a square can have
 
@@ -148,13 +147,6 @@ class GameScreenState extends State<GameScreen> {
       }
     }
   }
-
-  ElevatedButton _displayConfirmPlayButton() {
-    return ElevatedButton(
-        onPressed: _ConfirmPlayButton, child: const Text("Confirm Play"));
-  }
-
-  void _ConfirmPlayButton() {}
 
   Text _displayState(int i, int j) {
     // if gameWon == false, do if elif tree below but with inactiveX/O/Neutral

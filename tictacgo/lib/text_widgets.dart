@@ -19,9 +19,9 @@ class ActionText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(6.0),
+        padding: const EdgeInsets.all(6.0),
         child: SizedBox(
-            width: this.width,
+            width: width,
             child: TextField(
               controller: controller,
               keyboardType: inType,
