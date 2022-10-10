@@ -9,14 +9,9 @@ Text activeO = Text("O", style: style);
 Text activeNeutral = Text("", style: style);
 Text turnText = Text("", style: turnTextStyle);
 
-int nrows = 3; // number of rows in 3x3 2D array
-int ncols = 3; // number of columns in 3x3 2D array
-var boardStates = List.generate(
-    nrows,
-    (i) => List.generate(
-        ncols,
-        (j) => States
-            .neutral)); // 2D array of every square's state; all begin neutral
+// 2D array of every square's state; all begin neutral
+var boardStates =
+    List.generate(3, (i) => List.generate(3, (j) => States.neutral));
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
@@ -153,6 +148,17 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
+  ElevatedButton _displayConfirmPlayButton() {
+    if (gameWon == false) {
+      return const ElevatedButton(onPressed: null, child: Text("Confirm Play"));
+    } else {
+      return ElevatedButton(
+          onPressed: _playAgainButton, child: const Text("Confirm Play"));
+    }
+  }
+
+  void _ConfirmPlayButton() {}
+
   Text _displayState(int i, int j) {
     // if gameWon == false, do if elif tree below but with inactiveX/O/Neutral
 
@@ -245,7 +251,10 @@ class GameScreenState extends State<GameScreen> {
                       ],
                     )
                   ]),
-                ))
+                )),
+            Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: _displayConfirmPlayButton()),
           ],
         ),
       ),

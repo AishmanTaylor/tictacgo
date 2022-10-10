@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:tictacgo/friends_data.dart';
 import 'package:tictacgo/text_widgets.dart';
 
-import 'game.dart';
+import 'board.dart';
 
 void main() {
   runApp(homeScreen());
@@ -219,7 +219,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const gameScreen()),
+                              builder: (context) => const GameScreen()),
                         );
                       }
                     },
