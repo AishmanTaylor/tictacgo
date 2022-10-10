@@ -13,9 +13,9 @@ Usefulness:
 Sometimes you just need something to occupy your time and quick and easy to use phone games are a perfect solution to that. 
 
 Screenshots:
-![ScreenShot](ScreenShot1.png)
-![ScreenShot](ScreenShot2.png)
-![ScreenShot](ScreenShot3.png)
-![ScreenShot](ScreenShot4.png)
-![ScreenShot](ScreenShot5.png)
-![ScreenShot](ScreenShot6.png)
+![ScreenShot](Screenshots/ScreenShot1.png)
+![ScreenShot](Screenshots/ScreenShot2.png)
+![ScreenShot](Screenshots/ScreenShot3.png)
+![ScreenShot](Screenshots/ScreenShot4.png)
+![ScreenShot](Screenshots/ScreenShot5.png)
+![ScreenShot](Screenshots/ScreenShot6.png)
