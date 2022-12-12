@@ -164,6 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
 // https://blog.logrocket.com/creating-dropdown-list-flutter/
   String? selectedValue;
   final _dropdownFormKey = GlobalKey<FormState>();
+  Friend selectedFriend = Friend(ipAddr: '127.0.0.1', name: 'Me');
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +208,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onChanged: (String? newValue) {
                       setState(() {
                         selectedValue = newValue!;
+                        selectedFriend = _friends.getFriend(newValue)!;
                       });
                     },
                     items: dropdownItems),
@@ -217,7 +219,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const GameScreen()),
+                              builder: (context) => GameScreen(
+                                  friend:
+                                      selectedFriend)),
                         );
                       }
                     },

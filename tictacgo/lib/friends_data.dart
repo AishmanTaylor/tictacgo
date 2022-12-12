@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mutex/mutex.dart';
 
 import 'board.dart';
+import 'dart:convert';
 
 const int ourPort = 8888;
 final m = Mutex();
@@ -29,7 +30,7 @@ class Friends extends Iterable<String> {
       add(newFriend, ip);
       print("added $newFriend!");
     }
-    _ips2Friends[ip]!.receive(message);
+    _ips2Friends[ip]!.receiveBoard(message);
   }
 
   @override
@@ -44,38 +45,31 @@ class Friend extends ChangeNotifier {
 
   Friend({required this.ipAddr, required this.name});
 
-  Future<void> send(List<List<States>> message) async {
+  Future<void> send(List<dynamic> message) async {
+    print("HELLO");
     Socket socket = await Socket.connect(ipAddr, ourPort);
-    socket.write(message);
+    print(message);
+    print(jsonEncode(message));
+    print(jsonDecode(jsonEncode(message)));
+    socket.write(jsonEncode(message));
     socket.close();
     await _add_board("Me", message);
   }
 
-  Future<void> receive(String message) async {
-    return _add_message(name, message);
+  Future<void> receiveBoard(String message) async {
+    return _add_board(name, jsonDecode(message));
   }
 
-  Future<void> receiveBoard(List<List<States>> message) async {
-    return _add_board(name, message);
-  }
-
-  Future<void> _add_board(String name, List<List<States>> board) async {
+  Future<void> _add_board(String name, List<dynamic> board) async {
     await m.protect(() async {
       _board.add(Board(author: name, content: board));
-      notifyListeners();
-    });
-  }
-
-  Future<void> _add_message(String name, String message) async {
-    await m.protect(() async {
-      _messages.add(Message(author: name, content: message));
       notifyListeners();
     });
   }
 }
 
 class Board {
-  final List<List<States>> content;
+  final List<dynamic> content;
   final String author;
 
   const Board({required this.author, required this.content});

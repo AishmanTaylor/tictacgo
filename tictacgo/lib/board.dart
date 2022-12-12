@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'friends_data.dart';
 
-enum States { X, O, neutral } // all possible states a square can have
+//enum States { X, O, neutral } // all possible states a square can have
+final States = ['X', 'O', 'neutral'];
 
 TextStyle style = const TextStyle(color: Colors.black, fontSize: 75);
 TextStyle turnTextStyle = const TextStyle(color: Colors.black, fontSize: 25);
@@ -12,8 +13,7 @@ Text activeNeutral = Text("", style: style);
 Text turnText = Text("", style: turnTextStyle);
 
 // 2D array of every square's state; all begin neutral
-var boardStates =
-    List.generate(3, (i) => List.generate(3, (j) => States.neutral));
+var boardStates = List.generate(3, (i) => List.generate(3, (j) => States[2]));
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, this.friend});
@@ -32,7 +32,7 @@ class GameScreenState extends State<GameScreen> {
 
   //Handling for if it is your turn or not
   void _updateTurnText() {
-    if (_checkWon(States.X) || _checkWon(States.O)) {
+    if (_checkWon(States[0]) || _checkWon(States[1])) {
       setState(() {
         gameWon = true;
       });
@@ -65,8 +65,9 @@ class GameScreenState extends State<GameScreen> {
   }
 
   //Handling for sending DONT TOUCH THIS UNDER ANY CIRCUMSTANCE
-  Future<void> send(List<List<States>> msg) async {
-    await widget.friend!.send(msg).catchError((e) {
+  Future<void> send(List<dynamic> msg) async {
+    print(widget.friend?.ipAddr);
+    await widget.friend?.send(msg).catchError((e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text("Error: $e"),
       ));
@@ -85,21 +86,21 @@ class GameScreenState extends State<GameScreen> {
 
   //Changes the enum of the cell on the board to X or O
   void _calcState(int i, int j) {
-    if ((boardStates[i][j] == States.neutral) && (hostsTurn == true)) {
+    if ((boardStates[i][j] == States[2]) && (hostsTurn == true)) {
       setState(() {
-        boardStates[i][j] = States.X;
+        boardStates[i][j] = States[0];
         send(boardStates);
       });
-    } else if ((boardStates[i][j] == States.neutral) && (hostsTurn == false)) {
+    } else if ((boardStates[i][j] == States[2]) && (hostsTurn == false)) {
       setState(() {
-        boardStates[i][j] = States.O;
+        boardStates[i][j] = States[1];
         send(boardStates);
       });
     }
   }
 
   //Handling to check if there has been three in a row
-  bool _checkWon(States goalState) {
+  bool _checkWon(goalState) {
     if (boardStates[0][0] == goalState &&
         boardStates[0][1] == goalState &&
         boardStates[0][2] == goalState) {
@@ -161,7 +162,7 @@ class GameScreenState extends State<GameScreen> {
     for (int i = 0; i < boardStates.length; i++) {
       for (int j = 0; j < boardStates.length; j++) {
         setState(() {
-          boardStates[i][j] = States.neutral;
+          boardStates[i][j] = States[2];
           gameWon = false;
           hostsTurn = true;
           turnCounter = 0;
@@ -172,9 +173,9 @@ class GameScreenState extends State<GameScreen> {
 
   //Handling to actually determine if the button should be an X or an O or neutral
   Text _displayState(int i, int j) {
-    if (boardStates[i][j] == States.X) {
+    if (boardStates[i][j] == States[0]) {
       return activeX;
-    } else if (boardStates[i][j] == States.O) {
+    } else if (boardStates[i][j] == States[1]) {
       return activeO;
     } else {
       return activeNeutral;
